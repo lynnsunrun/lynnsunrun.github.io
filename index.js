@@ -1,16 +1,9 @@
-document.getElementById('timer').innerHTML =
-02 + ":" + 00;
-startTimer();
-
 function startTimer() {
   var presentTime = document.getElementById('timer').innerHTML;
   var timeArray = presentTime.split(/[:]+/);
   var m = timeArray[0];
   var s = checkSecond((timeArray[1] - 1));
   if(s==59){m=m-1}
-  if(s===0 && m === 0) {
-    clearInterval();
-  }
   //if(m<0){alert('timer completed')}
   document.getElementById('timer').innerHTML =
     m + ":" + s;
@@ -32,4 +25,20 @@ function submitComment(e){
    $('#userComment').append(commenttext);
    $('#name').val('');
    $('#commenttext').val('');
+   showDiv();
 };
+
+function showDiv() {
+  if (document.getElementById('commentSection').style.display === "block") {
+    document.getElementById('commentSection').style.display = "none";
+  } else {
+    document.getElementById('commentSection').style.display = "block";
+  }
+}
+
+$( document ).ready(function() {
+  console.log( "ready!" );
+  $('.carousel').carousel({
+    interval: 120000
+  })
+});
