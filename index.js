@@ -19,11 +19,15 @@ function checkSecond(sec) {
 function submitComment(e){
    e.preventDefault();
    var name = $('#name').val();
+   var email = $('#email').val();
    var commenttext = $('#commenttext').val();
-   console.log('hello', commenttext);
-   $('#userName').append(name);
-   $('#userComment').append(commenttext);
+   var concatInfo = '"' + commenttext + '"'  + ' ' + '-' + ' ' + name;
+
+   console.log('hello', concatInfo);
+
+   $('#newComment').append(concatInfo);
    $('#name').val('');
+   $('#email').val('');
    $('#commenttext').val('');
    showDiv();
 };
