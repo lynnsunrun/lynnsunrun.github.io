@@ -1,31 +1,49 @@
-function startTimer() {
-  var presentTime = document.getElementById('timer').innerHTML;
-  var timeArray = presentTime.split(/[:]+/);
-  var m = timeArray[0];
-  var s = checkSecond((timeArray[1] - 1));
-  if(s==59){m=m-1}
-  //if(m<0){alert('timer completed')}
-  document.getElementById('timer').innerHTML =
-    m + ":" + s;
-  setTimeout(startTimer, 1000);
+var url = new URLSearchParams(window.location.search)
+var name = url.get('name') ? url.get('name').replace(/[^a-zA-Z]+/gi, " ") : '';
+var message = url.get('message');
+
+var timeLeft = 30;
+var elem = document.getElementById('timer');
+
+var timerId = setInterval(countdown, 1000);
+
+function countdown() {
+  if (timeLeft < 0) {
+    elem.innerHTML = "00:00"
+    timeLeft = 30;
+  } else {
+    if (timeLeft < 10) {
+      elem.innerHTML = "00:0" + timeLeft;
+    } else {
+      elem.innerHTML = "00:" + timeLeft;
+    }
+    timeLeft--;
+  }
 }
 
-function checkSecond(sec) {
-  if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
-  if (sec < 0) {sec = "59"};
-  return sec;
+function getNext() {
+  timeLeft = 30;
+  countdown();
 }
 
+$('#carousel').on('slide.bs.carousel', function () {
+  timeLeft = 30;
+})
+
+function showComment() {
+  document.getElementById('input-comment').style.display = "block";
+}
 function submitComment(e){
    e.preventDefault();
+   showComment();
    var name = $('#name').val();
    var email = $('#email').val();
    var commenttext = $('#commenttext').val();
-   var concatInfo = '"' + commenttext + '"'  + ' ' + '-' + ' ' + name;
+   var newComment = '"' + commenttext + '"';
+   var inputName =  ' -' + ' ' + name;
 
-   console.log('hello', concatInfo);
-
-   $('#newComment').append(concatInfo);
+   $('#new-comment').prepend(newComment);
+   $('#inputName').append(inputName)
    $('#name').val('');
    $('#email').val('');
    $('#commenttext').val('');
@@ -33,16 +51,24 @@ function submitComment(e){
 };
 
 function showDiv() {
-  if (document.getElementById('commentSection').style.display === "block") {
-    document.getElementById('commentSection').style.display = "none";
+  if (document.getElementById('comment-section').style.display === "block") {
+    document.getElementById('comment-section').style.display = "none";
   } else {
-    document.getElementById('commentSection').style.display = "block";
+    document.getElementById('comment-section').style.display = "block";
+  }
+}
+
+function displayCustomText() {
+  var properCaseName = name.charAt(1).toUpperCase() + name.slice(2).toLowerCase();
+
+  if (name !== '') {
+    $('#customMsg').append(properCaseName + ' says, ' + '"' + message + '"');
   }
 }
 
 $( document ).ready(function() {
-  console.log( "ready!" );
+  displayCustomText();
   $('.carousel').carousel({
-    interval: 120000
+    interval: 31000
   })
 });
